@@ -5,8 +5,9 @@
 #include <vector>
 #include <thread>
 #include <unistd.h>
+#include <string.h>
 
-#define SLEEP_TIME 500
+#define SLEEP_TIME 700
 
 enum StateMachine {
     State_1,
@@ -16,10 +17,17 @@ enum StateMachine {
     State_5
 };
 
-int main(){
+int main(int argc, char* argv[]){
+    bool b_enable_crash = false;
+
     std::cout << "Application started..." << std::endl;
     std::cout << "Process Id: " << ::getpid() << std::endl;
     StateMachine n_state = State_1;
+
+    if(argc > 1 && strcmp(argv[1], "-c") == 0){
+        std::cout << "crash mode" << std::endl;
+        b_enable_crash = true;
+    }
 
     while(true){
         switch(n_state){
@@ -43,6 +51,12 @@ int main(){
         case State_5:
             std::cout << "State_5 reached" << std::flush;
             n_state = State_1;
+            if(b_enable_crash){
+                /* not covered by -Wall flag */
+                int nTmp = 5;
+                int *ptrNull = &nTmp;
+                free(ptrNull);
+            }
             break;
         default:
             std::cout << "Default state reached" << std::flush;
