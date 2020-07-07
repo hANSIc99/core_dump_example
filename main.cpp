@@ -17,6 +17,10 @@ enum StateMachine {
     State_5
 };
 
+void freeSomething(void *ptr){
+    free(ptr);
+}
+
 int main(int argc, char* argv[]){
     bool b_enable_crash = false;
 
@@ -55,7 +59,7 @@ int main(int argc, char* argv[]){
                 /* not covered by -Wall flag */
                 int nTmp = 5;
                 int *ptrNull = &nTmp;
-                free(ptrNull);
+                freeSomething(ptrNull);
             }
             break;
         default:
