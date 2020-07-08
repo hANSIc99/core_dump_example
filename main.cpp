@@ -2,7 +2,6 @@
 #include <ostream>
 #include <stdio.h>
 #include <iostream>
-#include <vector>
 #include <thread>
 #include <unistd.h>
 #include <string.h>
@@ -21,16 +20,33 @@ void freeSomething(void *ptr){
     free(ptr);
 }
 
+int zeroDivide(){
+    int nDivider = 5;
+    int nRes = 0;
+    while(nDivider > 0){
+        nDivider--;
+        nRes = 5 / nDivider;
+    }
+    return nRes;
+}
+
 int main(int argc, char* argv[]){
-    bool b_enable_crash = false;
+    bool b_enable_crash_1 = false;
+    bool b_enable_crash_2 = false;
 
     std::cout << "Application started..." << std::endl;
     std::cout << "Process Id: " << ::getpid() << std::endl;
     StateMachine n_state = State_1;
 
-    if(argc > 1 && strcmp(argv[1], "-c") == 0){
+    /* Throw SIGABRT */
+    if(argc > 1 && strcmp(argv[1], "-c1") == 0){
         std::cout << "crash mode" << std::endl;
-        b_enable_crash = true;
+        b_enable_crash_1 = true;
+    }
+    /* Zero Divide */
+    if(argc > 1 && strcmp(argv[1], "-c2") == 0){
+        std::cout << "crash mode" << std::endl;
+        b_enable_crash_2 = true;
     }
 
     while(true){
@@ -51,15 +67,18 @@ int main(int argc, char* argv[]){
         case State_4:
             std::cout << "State_4 reached" << std::flush;
             n_state = State_5;
-            break;
-        case State_5:
-            std::cout << "State_5 reached" << std::flush;
-            n_state = State_1;
-            if(b_enable_crash){
+            if(b_enable_crash_1){
                 /* not covered by -Wall flag */
                 int nTmp = 5;
                 int *ptrNull = &nTmp;
                 freeSomething(ptrNull);
+            }
+            break;
+        case State_5:
+            std::cout << "State_5 reached" << std::flush;
+            n_state = State_1;
+            if(b_enable_crash_2){
+                zeroDivide();
             }
             break;
         default:

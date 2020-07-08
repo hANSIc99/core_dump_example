@@ -4,11 +4,9 @@
 # -o output
 # -s make stripped libray
 
-# uncomment the last part in line 10 to specify current working
-# directory as the default search path for shared objects
+# uncomment the last part in line 9 to compile with debug symbold 
 
-CFLAGS =-Wall -Werror #-Wl,-rpath,$(shell pwd) 
-#LIBS =# -L. -lmy_shared
+CFLAGS =-Wall -Werror #-g 
 
 
 all: main.o
