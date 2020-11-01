@@ -13,7 +13,7 @@ all: main.o
 	c++ -o coredump main.o $(CFLAGS)
 
 main.o: main.cpp
-	c++ -c main.cpp $(CFLAGS)
+	 c++ -c main.cpp $(CFLAGS)
 
 .PHONY: clean
 clean:
