@@ -33,6 +33,7 @@ int zeroDivide(){
 int main(int argc, char* argv[]){
     bool b_enable_crash_1 = false;
     bool b_enable_crash_2 = false;
+    int  n_state_3_count  = 0;
 
     std::cout << "Application started..." << std::endl;
     std::cout << "Process Id: " << ::getpid() << std::endl;
@@ -62,6 +63,7 @@ int main(int argc, char* argv[]){
             break;
         case State_3:
             std::cout << "State_3 reached" << std::flush;
+            n_state_3_count++;
             n_state = State_4;
             break;
         case State_4:
